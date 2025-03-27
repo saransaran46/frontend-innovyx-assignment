@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function Auth({ isLogin }) {
     const [formData, setFormData] = useState({
@@ -19,25 +20,30 @@ function Auth({ isLogin }) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = isLogin 
-            ? 'http://localhost:8000/api/auth/login/' 
-            : 'http://localhost:8000/api/auth/register/';
+        const endpoint = isLogin ? 'auth/login/' : 'auth/register/';
         
-        axios.post(url, formData)
-            .then(response => {
-                if (isLogin) {
-                    localStorage.setItem('token', response.data.token);
+        try {
+            const response = await api.post(endpoint, formData);
+            
+            if (isLogin) {
+                // For Django TokenAuthentication, the token might be in response.data.auth_token
+                // or response.data.token depending on your setup
+                const token = response.data.token || response.data.auth_token;
+                if (token) {
+                    localStorage.setItem('token', token);
                     navigate('/');
                 } else {
-                    alert('Registration successful! Please login.');
-                    navigate('/login');
+                    setError('Login failed: No token received');
                 }
-            })
-            .catch(error => {
-                setError(error.response?.data?.message || 'An error occurred');
-            });
+            } else {
+                alert('Registration successful! Please login.');
+                navigate('/login');
+            }
+        } catch (error) {
+            setError(error.response?.data?.error || 'An error occurred');
+        }
     };
 
     return (
