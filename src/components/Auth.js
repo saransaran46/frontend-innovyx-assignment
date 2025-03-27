@@ -28,8 +28,6 @@ function Auth({ isLogin }) {
             const response = await api.post(endpoint, formData);
             
             if (isLogin) {
-                // For Django TokenAuthentication, the token might be in response.data.auth_token
-                // or response.data.token depending on your setup
                 const token = response.data.token || response.data.auth_token;
                 if (token) {
                     localStorage.setItem('token', token);

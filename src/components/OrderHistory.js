@@ -15,7 +15,6 @@ function OrderHistory() {
             }
         })
         .then(response => {
-            // Access the orders array from the response data
             setOrders(response.data.orders || []);
             setLoading(false);
         })
@@ -60,9 +59,9 @@ function OrderHistory() {
                                         {order.items.map((item, itemIndex) => (
                                             <tr key={`${order.order_id}-${itemIndex}`}>
                                                 <td>{item.product_name} (ID: {item.product_id})</td>
-                                                <td>${item.price}</td>
+                                                <td>Rs. {item.price}</td>
                                                 <td>{item.quantity}</td>
-                                                <td>${item.item_total}</td>
+                                                <td>Rs. {item.item_total}</td>
                                             </tr>
                                         ))}
                                     </tbody>
