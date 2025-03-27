@@ -89,9 +89,9 @@ function Cart() {
                                         />
                                         {item.product_name}
                                     </td>
-                                    <td>${item.price}</td>
+                                    <td>Rs{item.price}</td>
                                     <td>{item.quantity}</td>
-                                    <td>${item.item_total}</td>
+                                    <td>Rs{item.item_total}</td>
                                     <td>
                                         <Button 
                                             variant="danger" 
@@ -107,7 +107,7 @@ function Cart() {
                         <tfoot>
                             <tr>
                                 <td colSpan="3" className="text-end"><strong>Total:</strong></td>
-                                <td><strong>${cart.total}</strong></td>
+                                <td><strong>Rs{cart.total}</strong></td>
                                 <td></td>
                             </tr>
                         </tfoot>
